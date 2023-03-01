@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const {Triangle, Square, Circle} = require('./lib/shapes');
 
 function init() {
     inquirer.prompt ([
@@ -15,7 +16,7 @@ function init() {
         },
         {
             type: 'input',
-            name: 'text',
+            name: 'textColor',
             message: 'What would you like the text color to be?',
         },
         {
@@ -26,10 +27,19 @@ function init() {
         },
     ])
     .then ((input) => {
-        console.log(input.text);
-        console.log(input.color);
-        console.log(input.shape);
-        console.log(input.characters);
+        console.log(input);
+        let chosenShape;
+        if (input.shape === 'triangle') {
+            chosenShape = new Triangle()
+        }
+        if (input.shape === 'square') {
+            chosenShape = new Square()
+        }
+        if (input.shape === 'circle') {
+            chosenShape = new Circle()
+        }
+        chosenShape.setColor(input.color)
+        console.log(chosenShape)
     })
 }
 
