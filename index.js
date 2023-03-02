@@ -1,18 +1,18 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const SVG = require('./lib/svg');
-const {Triangle, Square, Circle} = require('./lib/shapes');
+const {Triangle, Square, Circle} = require('./lib/shape');
 
 function init() {
     inquirer.prompt ([
         {
             type: 'input',
-            name: 'characters',
+            name: 'text',
             message: 'Enter up to 3 characters to be included in the logo',
         },
         {
             type: 'input',
-            name: 'color',
+            name: 'shapeColor',
             message: 'What would you like the background color to be?',
         },
         {
@@ -27,20 +27,24 @@ function init() {
             choices: ['circle', 'triangle', 'square'],
         },
     ])
-    .then ((input) => {
-        console.log(input);
-        let chosenShape;
-        if (input.shape === 'triangle') {
-            chosenShape = new Triangle()
+    .then ((response) => {
+        console.log(response);
+        let shape;
+        if (response.shape === "triangle") {
+            shape = new Triangle()
         }
-        if (input.shape === 'square') {
-            chosenShape = new Square()
+        if (response.shape === "square") {
+            shape = new Square()
         }
-        if (input.shape === 'circle') {
-            chosenShape = new Circle()
+        if (response.shape === "circle") {
+            shape = new Circle()
         }
-        chosenShape.setColor(input.color)
-        console.log(chosenShape)
+        shape.setColor(response.shapeColor);
+        const svg = new SVG();
+        svg.setText(response.text, response.textColor);
+        svg.setShape(shape);
+        fs.writeFileSync('logo.svg', svg.render());
+        console.log('logo.svg created succesfully');
     })
 }
 
