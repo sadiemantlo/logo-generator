@@ -29,6 +29,7 @@ function init() {
     ])
     .then ((response) => {
         console.log(response);
+        // determines which shape user selected
         let shape;
         if (response.shape === "triangle") {
             shape = new Triangle()
